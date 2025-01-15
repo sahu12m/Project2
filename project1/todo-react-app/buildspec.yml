@@ -1,0 +1,41 @@
+version: 0.2
+#env:
+#  secrets-manager:
+#    SECRET_VALUE: "arn:aws:secretsmanager:us-east-1:358326491230:secret:vikas.env-s03Rwx"
+    
+phases:
+  install:
+    runtime-versions:
+      nodejs: 14
+    commands:
+      - npm install
+      
+  build:
+    commands:
+      - echo $CODEBUILD_SRC_DIR
+      - echo $CODEBUILD_SRC_DIR_angular
+      - pwd
+      - ls -al
+      # Move to React folder
+      - cd $CODEBUILD_SRC_DIR
+      - ls -al
+      - npm run build
+      - ls -al
+      - mv build todo
+      - ls -al todo
+
+      # Build angular app      
+    # - cd $CODEBUILD_SRC_DIR_angular
+    # - ls -al
+    # - ng build --prod --output-path dist
+    # - mkdir -p $CODEBUILD_SRC_DIR/angular
+    # - mv dist/* $CODEBUILD_SRC_DIR/angular
+    # - ls -al $CODEBUILD_SRC_DIR/angular
+      
+artifacts:
+  files:
+    - todo/**/*
+    - angular/**/*
+    - appspec.yml
+    - scripts/**/*
+  #  - .env
